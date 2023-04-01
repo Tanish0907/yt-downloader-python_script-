@@ -6,7 +6,7 @@
   <br>
   2)type:
   <br>
-    python ytdownloader.py 'link of the video or the playlist to be downloaded'
+    <tab>python ytdownloader.py 'link of the video or the playlist to be downloaded'
     <br>
   3) to search and download
   <br>

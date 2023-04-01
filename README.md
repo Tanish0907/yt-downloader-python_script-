@@ -1,9 +1,17 @@
 # yt-downloader(python_script)
-How to use:
+# How to use:
+<h2>
+<br>
   1)open terminal
+  <br>
   2)type:
+  <br>
     python ytdownloader.py 'link of the video or the playlist to be downloaded'
-  3) to search and download 
+    <br>
+  3) to search and download
+  <br>
       type:
+      <br>
         python ytdownloader.py -s 'what to search is typed here '
- thanks for  downloading  
+ <br>thanks for  downloading  
+</h2>

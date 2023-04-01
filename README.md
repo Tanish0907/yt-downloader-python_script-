@@ -1,6 +1,6 @@
 # yt-downloader(python_script)
 # How to use:
-<h2>
+<h3>
 <br>
   1)open terminal
   <br>
@@ -14,4 +14,4 @@
       <br>
         python ytdownloader.py -s 'what to search is typed here '
  <br>thanks for  downloading  
-</h2>
+</h3>

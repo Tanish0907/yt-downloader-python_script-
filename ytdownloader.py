@@ -2,11 +2,12 @@ from pytube import YouTube, Search
 import pytube.contrib.playlist as pl
 import sys
 import os
-link = sys.argv[1]
+
 
 def vid(s):
 
     video = YouTube(s)
+    print(video)
     path = "./"+video.title+"/"
     os.makedirs(path)
     print("title of video:", video.title)
@@ -37,70 +38,72 @@ def plst(s):
             pass
 
 
-
 def search(s):
-        global x, lk
-        search = Search(s)
-        lk=[]
-        
+    global x, lk
+    search = Search(s)
+    lk = []
+
+    for i in search.results:
+        lk.append(f"https://www.youtube.com/watch?v={i.video_id}")
+    l = len(lk)
+    if x > 0:
+        lk.clear()
+        search.get_next_results()
         for i in search.results:
             lk.append(f"https://www.youtube.com/watch?v={i.video_id}")
-        l=len(lk)
-        if x>0:
-            lk.clear()
-            search.get_next_results()
-            for i in search.results:
-                lk.append(f"https://www.youtube.com/watch?v={i.video_id}")
-            for i in range(0,l-1):
-                lk.pop(i)
-                # print("test",lk[i])
-            lk.pop()
-        count=0
-        print("search results".center(50,"-"))
-        for i in lk:
-            try:
-                v=YouTube(i)
-                print(count,v.title)
-                count=count+1
-            except:
-                pass
-        print("done".center(50,"-"))
-        
-        x=x+1
-        
+        for i in range(0, l-1):
+            lk.pop(i)
+            # print("test",lk[i])
+        lk.pop()
+    count = 0
+    print("search results".center(50, "-"))
+    for i in lk:
+        try:
+            v = YouTube(i)
+            print(count, v.title)
+            count = count+1
+        except:
+            pass
+    print("done".center(50, "-"))
+
+    x = x+1
+
 
 def s2():
-        dall=input("press r to search or y to download all (AFTER SEARCHING!!)or n to exit or enter the number of video to download:")
-        if dall=="y":
-            for i in lk:
-                vid(i)
-                print("finished".center(50,"-"))
-            exit()
-        elif dall=="n":
-            exit()
-        elif dall=="r":
-            search(sys.argv[2])
-            s2()
-        else:
-            dall=int(dall)
-            vid(lk[dall])
-            print("finished".center(50,"-"))
-            exit()
-
-def main(): 
-    global x
-    x=0
-    if sys.argv[1]=="-s":
-           
-            s2()
+    dall = input(
+        "press r to search or y to download all (AFTER SEARCHING!!)or n to exit or enter the number of video to download:")
+    if dall == "y":
+        for i in lk:
+            vid(i)
+            print("finished".center(50, "-"))
+        exit()
+    elif dall == "n":
+        exit()
+    elif dall == "r":
+        search(sys.argv[2])
+        s2()
     else:
+        dall = int(dall)
+        vid(lk[dall])
+        print("finished".center(50, "-"))
+        exit()
+
+
+def main():
+    global x
+    x = 0
+    if sys.argv[1] == "-s":
+
+        s2()
+    elif sys.argv[1] == "-l":
+        link = input("enter link of vid/plst:")
         if ("list=" in link):
             plst(link)
-            print("finished".center(50,"-"))
+            print("finished".center(50, "-"))
         else:
             vid(link)
-            print("finished".center(50,"-"))
-if __name__=="__main__":
+            print("finished".center(50, "-"))
+
+
+if __name__ == "__main__":
     main()
-
-

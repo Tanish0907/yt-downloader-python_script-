@@ -2,12 +2,14 @@ from pytube import YouTube, Search
 import pytube.contrib.playlist as pl
 import sys
 import os
+import moviepy.editor as mp
 
 
 def vid(s):
 
     video = YouTube(s)
     print(video)
+    global path
     path = "./"+video.title+"/"
     os.makedirs(path)
     print("title of video:", video.title)
@@ -19,11 +21,11 @@ def vid(s):
 
 def plst(s):
     playlist = pl.Playlist(s)
+    global path
     path = "./"+playlist.title+"/"
     os.makedirs(path)
     print("title of playlist:", playlist.title)
     print("no of videos:", playlist.length)
-    print("no of views:", playlist.views)
     video = playlist.video_urls
     for i in video:
         print("".center(50, "-"))
@@ -36,6 +38,14 @@ def plst(s):
             video.download(path)
         except:
             pass
+
+def music(path):
+    os.mkdir("./songs")
+    for i in os.listdir(path):
+        clip = mp.VideoFileClip(f'{path}/{i}')
+        i=i.replace(".mp4",".mp3")
+        clip.audio.write_audiofile(f'./songs/{i}')
+
 
 
 def search(s):
@@ -103,6 +113,17 @@ def main():
         else:
             vid(link)
             print("finished".center(50, "-"))
+    elif sys.argv[1]=="-m":
+        link = input("enter link of music plst:")
+        if ("list=" in link):
+            plst(link)
+            music(path)
+            print("finished".center(50, "-"))
+        else:
+            vid(link)
+            music(path)
+            print("finished".center(50, "-"))
+        
 
 
 if __name__ == "__main__":

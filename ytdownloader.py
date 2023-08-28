@@ -4,10 +4,14 @@ import sys
 import os
 import ffmpeg
 import shutil
+from concurrent.futures import ThreadPoolExecutor
 global x
-def combine(vid_path,audio_path):
-    output_path="./video_downloaded"
-    os.mkdir(output_path)
+download_folder="./video_downloaded/"
+pool=ThreadPoolExecutor(2)
+if not os.path.exists(download_folder):
+    os.mkdir("./video_downloaded")
+def combine(vid_path,audio_path,source_path):
+    output_path=download_folder
     vids=[]
     audio=[]
     for file_path in os.listdir(vid_path):
@@ -39,26 +43,44 @@ def combine(vid_path,audio_path):
         shutil.move(file,destination)
         os.remove(vids[i])
         os.remove(audio[i])
-    os.rmdir(path+".mp3")
-    os.rmdir(path)
+    os.rmdir(source_path+".mp3")
+    os.rmdir(source_path)
     
 
 
-def vid(s):
-    global path
+def vid(s,path=None):
+    
     video = YouTube(s)
-    path = "./"+video.title+"/"
-    os.makedirs(path)
+    if path==None:
+        path = "./"+video.title+"/"
+        os.makedirs(path)
     print("title of video:", video.title)
     print("length of video:", format(video.length/60, ".2f"), "minutes")
     print("no of views:", video.views)
-    vid = video.streams.filter(res="1080p",progressive="False").first()
-    if vid==None:
-        vid = video.streams.filter(res="720p",progressive="False").first()
-    audio=video.streams.filter(mime_type="audio/mp4",abr="128kbps").first()
-    audio.download(path+".mp3")
-    vid.download(path)
+    vid = video.streams.filter(res="1080p")
+    try:
+        test=vid[0]
+        print("downloading 1080p")
+        vid=video.streams.filter(res="1080p").first()
+    except:
+        print("1080p not available downloading 720p instead!!!")
+        vid=video.streams.filter(res="720p").first()
+        vid.download(path)
+        print("video-downloaded")
+        exit()
 
+    audio=video.streams.filter(mime_type="audio/mp4",abr="128kbps").first()
+    try:
+        vid_thread=pool.submit(vid.download,path)
+        audio_thread=pool.submit(audio.download,path+".mp3")
+        # vid.download(path)
+        # audio.download(path+".mp3")
+    except:
+        pass
+    print(vid_thread.result(),audio_thread.result())
+    if vid_thread.done() and audio_thread.done():
+        combine(path,path+".mp3",path)
+        
 
 def plst(s):
     global path
@@ -70,20 +92,7 @@ def plst(s):
     video = playlist.video_urls
     for i in video:
         print("".center(50, "-"))
-        video = YouTube(i)
-        print("title of video:", video.title)
-        print("length of video:", format(video.length/60, ".2f"), "minutes")
-        print("no of views:", video.views)
-        vid = video.streams.filter(res="1080p").first()
-        if vid==None:
-            vid = video.streams.filter(res="720p",progressive="False").first()
-        audio=video.streams.filter(mime_type="audio/mp4",abr="128kbps").first()
-
-        try:
-            vid.download(path)
-            audio.download(path+".mp3")
-        except:
-            pass
+        vid(i,path)
 
 def music(s):
     video = YouTube(s)
@@ -174,11 +183,10 @@ def main():
         link = input("enter link of vid/plst:")
         if ("list=" in link):
             plst(link)
-            combine(path,path+".mp3")
             print("finished".center(50, "-"))
         else:
             vid(link)
-            combine(path,path+".mp3")
+            
             print("finished".center(50, "-"))
     elif sys.argv[1]=="-m":
         link = input("enter link of music plst/vid:")

@@ -1,4 +1,10 @@
 # yt-downloader(python_script)
+# requirements
+<br>
+linux : sudo apt install ffmpeg
+<br>
+windows:https://phoenixnap.com/kb/ffmpeg-windows (install ffmpeg)
+
 # How to use:
 
 <br>

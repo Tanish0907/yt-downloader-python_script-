@@ -3,6 +3,7 @@ import pytube.contrib.playlist as pl
 import sys
 import os
 import ffmpeg
+import subprocess
 import shutil
 from concurrent.futures import ThreadPoolExecutor
 global x
@@ -27,17 +28,16 @@ def combine(vid_path,audio_path,source_path):
     for i in range(len(vids)):
         audio_input_file = audio[i]
         video_input_file = vids[i]
-        output_file =  vids[i].split("/")[-1]
-
+        output_file =  vids[i].split('/')[-1]
+        # subprocess.run(f"ffmpeg -i {video_input_file} -i {audio_input_file} -c:v copy -c:a aac {output_file}",shell=True)
         # Load the audio and video streams
         audio_stream = ffmpeg.input(audio_input_file)
         video_stream = ffmpeg.input(video_input_file)
 
         # Merge the audio and video streams
-        output_stream = ffmpeg.output(video_stream, audio_stream, output_file, vcodec='copy', acodec='aac', strict='experimental')
+        ffmpeg.output(video_stream, audio_stream, output_file, vcodec='copy', acodec='aac', strict='experimental').run()
 
         # Run the FFmpeg command
-        ffmpeg.run(output_stream)
         file=f"./{output_file}"
         destination=output_path
         shutil.move(file,destination)

@@ -6,7 +6,10 @@ linux : sudo apt install ffmpeg
 windows:https://phoenixnap.com/kb/ffmpeg-windows (install ffmpeg)
 
 # How to use:
-
+<br>
+clone repo
+<br>
+go to folder u just cloned 
 <br>
 open terminal
   <br>

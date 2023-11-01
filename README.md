@@ -17,14 +17,15 @@ open terminal
   <br>
   <center>pip install -r req.txt<center>
   <br>
-  to search:
-  <br>
-  <center>python --search "term"<center>
-  <br>
-  for downloading a video:
-  <br>
-  <center>python  --downolad_video "link"<center>
-  <br>
-  for downloading audio only :
-  <br>
-  <center>python ytdownloader.py --download_music "link"<center>
+  <table>
+    <tr><th>
+    commands
+    </th></tr>
+    <tr><td>python main.py --search "term"</td></tr>
+    <tr><td>python main.py --downolad_video "link"</td></tr>
+    <tr><td>python main.py --download_music "link"</td></tr>
+
+
+  </table>
+
+ 

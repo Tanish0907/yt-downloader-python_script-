@@ -18,6 +18,7 @@ open terminal
   <center>pip install -r req.txt<center>
   <br>
   to search:
+  <br>
   <center>python --search "term"<center>
   <br>
   for downloading a video:

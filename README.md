@@ -6,7 +6,7 @@ linux : sudo apt install ffmpeg
 windows:https://phoenixnap.com/kb/ffmpeg-windows (install ffmpeg)
 
 # How to use:
-<br><h4>
+<br>
 clone repo
 <br>
 go to Ytdl folder in repo 
@@ -18,14 +18,14 @@ open terminal
   <center>pip install -r req.txt<center>
   <br>
   <table>
-    <tr><th>
+    <h3><tr><th>
     commands
     </th></tr>
     <tr><td>python main.py --search "term"</td></tr>
     <tr><td>python main.py --downolad_video "link"</td></tr>
     <tr><td>python main.py --download_music "link"</td></tr>
+    </h3>
 
-
-  </table></h4>
+  </table>
 
  

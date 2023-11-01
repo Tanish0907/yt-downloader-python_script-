@@ -18,13 +18,12 @@ open terminal
   <center>pip install -r req.txt<center>
   <br>
   <table>
-    <h3><tr><th>
+    <tr><th>
     commands
     </th></tr>
     <tr><td>python main.py --search "term"</td></tr>
     <tr><td>python main.py --downolad_video "link"</td></tr>
     <tr><td>python main.py --download_music "link"</td></tr>
-    </h3>
 
   </table>
 

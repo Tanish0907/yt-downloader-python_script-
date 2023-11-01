@@ -1,2 +1,5 @@
 pytube
 ffmpeg-python
+twine
+click
+pandas

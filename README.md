@@ -9,7 +9,7 @@ windows:https://phoenixnap.com/kb/ffmpeg-windows (install ffmpeg)
 <br>
 clone repo
 <br>
-go to folder u just cloned 
+go to Ytdl folder in repo 
 <br>
 open terminal
   <br>
@@ -17,10 +17,13 @@ open terminal
   <br>
   <center>pip install -r req.txt<center>
   <br>
+  to search:
+  <center>python --search "term"<center>
+  <br>
   for downloading a video:
   <br>
-  <center>python ytdownloader.py -l<center>
+  <center>python  --downolad_video "link"<center>
   <br>
   for downloading audio only :
   <br>
-  <center>python ytdownloader.py -m<center>
+  <center>python ytdownloader.py --download_music "link"<center>

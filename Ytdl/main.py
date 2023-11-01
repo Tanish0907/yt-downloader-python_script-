@@ -1,4 +1,4 @@
-from pytube import YouTube
+from pytube import YouTube,Search
 import pytube.contrib.playlist as pl
 import sys
 import os
@@ -6,7 +6,14 @@ import ffmpeg
 import subprocess
 import shutil
 from concurrent.futures import ThreadPoolExecutor
+from multiprocessing.dummy import Pool as ThreadPool
+import click
+import pandas
+from rich import print
+from rich.table import Table
+
 global x
+global vid_dict
 download_folder="./video_downloaded/"
 pool=ThreadPoolExecutor(2)
 if not os.path.exists(download_folder):
@@ -124,63 +131,39 @@ def music_plst(s):
             audio.download(path)
         except:
             pass
+def table_print(dataframe: pandas.DataFrame):
+    table = Table(title="list of videos")
+    table.add_column("ID", justify="right", style="purple", no_wrap=True)
+    table.add_column("Title", style="magenta")
+    table.add_column("Length", justify="right", style="red", no_wrap=True)
+    table.add_column("Link", justify="right", style="blue", no_wrap=True)
+    for i in range(len(dataframe)):
+        table.add_row(dataframe.loc[i,"ID"],dataframe.loc[i,"Title"],dataframe.loc[i,"Length"],dataframe.loc[i,"Link"])
+    print(table)
+vid_dict={'ID':[],"Title":[],"Length":[],"Link":[]}  
+def get_vid_info(i):
+    video = i
+    vid_dict['ID'].append(str(video.video_id))
+    vid_dict['Title'].append(str(video.title))
+    vid_dict['Length'].append(str(format(video.length/60, ".2f")))
+    vid_dict['Link'].append(f"[link={video.watch_url}]LINK[/link]")
 
-
-# def search(s):
-#     global x, lk
-#     search = Search(s)
-#     lk = []
-#     x=0
-#     for i in search.results:
-#         lk.append(f"https://www.youtube.com/watch?v={i.video_id}")
-#     l = len(lk)
-#     if x > 0:
-#         lk.clear()
-#         search.get_next_results()
-#         for i in search.results:
-#             lk.append(f"https://www.youtube.com/watch?v={i.video_id}")
-#         for i in range(0, l-1):
-#             lk.pop(i)
-#             # print("test",lk[i])
-#         lk.pop()
-#     count = 0
-#     print("search results".center(50, "-"))
-#     for i in lk:
-#         try:
-#             v = YouTube(i)
-#             print(count, v.title)
-#             count = count+1
-#         except:
-#             pass
-#     print("done".center(50, "-"))
-
-#     x = x+1
-
-
-# def s2():
-#     dall = input(
-#         "press r to search or y to download all (AFTER SEARCHING!!)or n to exit or enter the number of video to download:")
-#     if dall == "y":
-#         for i in lk:
-#             vid(i)
-#             print("finished".center(50, "-"))
-#         exit()
-#     elif dall == "n":
-#         exit()
-#     elif dall == "r":
-#         search(sys.argv[2])
-#         s2()
-#     else:
-#         dall = int(dall)
-#         vid(lk[dall])
-#         print("finished".center(50, "-"))
-#         exit()
-
-
-
-def main():
-    if sys.argv[1] == "-l":
-        link = input("enter link of vid/plst:")
+@click.command()
+@click.option("--search", help="jackett api key")
+@click.option("--download_video", help="search term")
+@click.option("--download_music", help="search term")
+@click.option("--info", help="catagory")
+def main(search=None, download_video=None,download_music=None, info=None):
+    if search!=None:
+        res=Search(search).results
+        pool=ThreadPool(10)
+        pool.map(get_vid_info,res)
+        pool.close()
+        pool.join()
+        df=pandas.DataFrame(vid_dict)
+        table_print(df)
+    elif download_video!=None:
+        link = download_video
         if ("list=" in link):
             plst(link)
             print("finished".center(50, "-"))
@@ -188,8 +171,8 @@ def main():
             vid(link)
             
             print("finished".center(50, "-"))
-    elif sys.argv[1]=="-m":
-        link = input("enter link of music plst/vid:")
+    elif download_music!=None:
+        link = download_music
         if ("list=" in link):
             music_plst(link)
             print("finished".center(50, "-"))

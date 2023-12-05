@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 from pathlib import Path
 this_directory = Path(__file__).parent
-Long_description = (this_directory / "README.md").read_text()
+Long_description = (this_directory / "pypiREADME.md").read_text()
 setup(
     author="Tanish",
     author_email="sharmatanish097654@gmail.com",
-    description="ytdl is a command line tool to search and download videos from yt  using the command line.",
+    description="ytdl is a command line tool to search and download videos in 1080p from yt using the command line.",
     long_description_content_type='text/markdown',
     long_description=Long_description,
     name="ytdl",
@@ -16,7 +16,7 @@ setup(
         "ffmpeg-python",
         "click", 
     ],
-    keywords=["python","youtube","youtube downloader","ytdl","downloader","pytube"],
+    keywords=["python","youtube","youtube downloader","ytdl","Ytdl","1080p yt downloader","downloader","pytube"],
     entry_points={
         "console_scripts": [
             "ytdl=Ytdl.main:main",

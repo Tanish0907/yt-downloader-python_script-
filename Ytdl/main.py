@@ -1,9 +1,7 @@
 from pytube import YouTube,Search
 import pytube.contrib.playlist as pl
-import sys
 import os
 import ffmpeg
-import subprocess
 import shutil
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing.dummy import Pool as ThreadPool
@@ -11,13 +9,15 @@ import click
 import pandas
 from rich import print
 from rich.table import Table
-
+import getpass
 global x
 global vid_dict
 download_folder="./video_downloaded/"
 pool=ThreadPoolExecutor(2)
 if not os.path.exists(download_folder):
     os.mkdir("./video_downloaded")
+
+    
 def combine(vid_path,audio_path,source_path):
     output_path=download_folder
     vids=[]
@@ -74,7 +74,8 @@ def vid(s,path=None):
         vid=video.streams.filter(res="720p").first()
         vid.download(path)
         print("video-downloaded")
-        exit()
+        shutil.move(path,download_folder)
+        return("done")
 
     audio=video.streams.filter(mime_type="audio/mp4",abr="128kbps").first()
     try:
@@ -149,11 +150,13 @@ def get_vid_info(i):
     vid_dict['Link'].append(f"[link={video.watch_url}]LINK[/link]")
 
 @click.command()
-@click.option("--search", help="jackett api key")
-@click.option("--download_video", help="search term")
-@click.option("--download_music", help="search term")
-@click.option("--info", help="catagory")
+@click.option("--search", help="search")
+@click.option("--download_video", help="download video")
+@click.option("--download_music", help="download music")
+
 def main(search=None, download_video=None,download_music=None, info=None):
+    downloads_folder="./video_downloaded"
+    user=getpass.getuser()
     if search!=None:
         res=Search(search).results
         pool=ThreadPool(10)
@@ -166,21 +169,22 @@ def main(search=None, download_video=None,download_music=None, info=None):
         link = download_video
         if ("list=" in link):
             plst(link)
+            shutil.move(downloads_folder,f"/home/{user}/Downloads")
             print("finished".center(50, "-"))
         else:
             vid(link)
-            
+            shutil.move(downloads_folder,f"/home/{user}/Downloads")
             print("finished".center(50, "-"))
     elif download_music!=None:
         link = download_music
         if ("list=" in link):
             music_plst(link)
+            shutil.move(downloads_folder,f"/home/{user}/Downloads")
             print("finished".center(50, "-"))
         else:
             music(link)
+            shutil.move(downloads_folder,f"/home/{user}/Downloads")
             print("finished".center(50, "-"))
-        
-
 
 if __name__ == "__main__":
     main()

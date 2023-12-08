@@ -25,4 +25,4 @@ open terminal
 
   </table>
 
- 
+ <p>note :plz remove the video_downloaded folder from the downloads folder after downloading and taking out the vide from folder as it might cause the folfer already exists error</p>

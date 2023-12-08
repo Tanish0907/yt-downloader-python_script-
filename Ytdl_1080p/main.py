@@ -105,33 +105,25 @@ def plst(s):
 def music(s):
     video = YouTube(s)
     path = "./"+video.title+"/"
+    n=1
+    if video.title in os.listdir("./video_downloaded"):
+        path = "./"+video.title+f"({n})/"
+        n=n+1
     os.makedirs(path)
     print("title of video:", video.title)
     print("length of video:", format(video.length/60, ".2f"), "minutes")
     print("no of views:", video.views)
     audio=video.streams.filter(mime_type="audio/mp4",abr="128kbps").first()
     audio.download(path)
-
+    shutil.move(path,"./video_downloaded")
 def music_plst(s):
     playlist = pl.Playlist(s)
-
-    path = "./"+playlist.title+"/"
-    os.makedirs(path)
     print("title of playlist:", playlist.title)
     print("no of videos:", playlist.length)
     video = playlist.video_urls
     for i in video:
         print("".center(50, "-"))
-        video = YouTube(i)
-        print("title of video:", video.title)
-        print("length of video:", format(video.length/60, ".2f"), "minutes")
-        print("no of views:", video.views)
-        audio=video.streams.filter(mime_type="audio/mp4",abr="128kbps").first()
-
-        try:
-            audio.download(path)
-        except:
-            pass
+        music(i)
 def table_print(dataframe: pandas.DataFrame):
     table = Table(title="list of videos")
     table.add_column("ID", justify="right", style="purple", no_wrap=True)
@@ -157,6 +149,9 @@ def get_vid_info(i):
 def main(search=None, download_video=None,download_music=None, info=None):
     downloads_folder="./video_downloaded"
     user=getpass.getuser()
+    downloads=f"/home/{user}/Downloads"
+    if download_folder in os.listdir(f'/home/{user}/Downloads'):
+        os.rmdir(f"home/{user}/Downloads/video_downloaded")
     if search!=None:
         res=Search(search).results
         pool=ThreadPool(10)
@@ -169,21 +164,21 @@ def main(search=None, download_video=None,download_music=None, info=None):
         link = download_video
         if ("list=" in link):
             plst(link)
-            shutil.move(downloads_folder,f"/home/{user}/Downloads")
+            shutil.move(downloads_folder,downloads)
             print("finished".center(50, "-"))
         else:
             vid(link)
-            shutil.move(downloads_folder,f"/home/{user}/Downloads")
+            shutil.move(downloads_folder,downloads)
             print("finished".center(50, "-"))
     elif download_music!=None:
         link = download_music
         if ("list=" in link):
             music_plst(link)
-            shutil.move(downloads_folder,f"/home/{user}/Downloads")
+            shutil.move(downloads_folder,downloads)
             print("finished".center(50, "-"))
         else:
             music(link)
-            shutil.move(downloads_folder,f"/home/{user}/Downloads")
+            shutil.move(downloads_folder,downloads)
             print("finished".center(50, "-"))
 
 if __name__ == "__main__":

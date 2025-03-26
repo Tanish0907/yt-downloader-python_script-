@@ -1,4 +1,4 @@
-```markdown
+
 # YouTube Downloader (Python Package)
 
 A cross-platform YouTube video/audio downloader with quality options.
@@ -8,6 +8,7 @@ A cross-platform YouTube video/audio downloader with quality options.
 1. Install FFmpeg:
 
    **Linux**:
+
    ```bash
    sudo apt install ffmpeg
    ```
@@ -46,7 +47,7 @@ yt-download --playlist "URL"
 If you get FFmpeg errors:
 1. Verify installation with `ffmpeg -version`
 2. Ensure it's in your system PATH
-```
+
 
 Key points:
 1. Removed clone/git instructions since it's a pip package

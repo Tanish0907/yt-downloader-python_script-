@@ -1,7 +1,6 @@
 # git repo
 <p>https://github.com/Tanish0907/yt-downloader-python_script-<p>
 
-```markdown
 # YouTube Downloader (Python Package)
 
 A cross-platform YouTube video/audio downloader with quality options.
@@ -49,7 +48,6 @@ yt-download --playlist "URL"
 If you get FFmpeg errors:
 1. Verify installation with `ffmpeg -version`
 2. Ensure it's in your system PATH
-```
 
 Key points:
 1. Removed clone/git instructions since it's a pip package

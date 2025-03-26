@@ -8,13 +8,15 @@ setup(
     description="ytdl is a command line tool to search and download videos in 1080p from yt using the command line.",
     long_description_content_type='text/markdown',
     long_description=Long_description,
-    name="ytdl-1080p",
-    version="1.1.1",
+    name="yt-download",
+    version="0.1",
     packages=find_packages(),
     install_requires=[
-        "pytube",
+        "yt-dl",
         "ffmpeg-python",
-        "click", 
+        "click",
+        "rich",
+        "pandas" 
     ],
     keywords=["python","ytdl_1080p","ytdl-1080p","ytdl 1080p","1080p","ytdl1080p","youtube","youtube downloader","ytdl","Ytdl","1080p yt downloader","downloader","pytube"],
     entry_points={

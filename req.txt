@@ -1,5 +1,6 @@
-pytube
+yt-dlp
 ffmpeg-python
 twine
 click
 pandas
+rich
